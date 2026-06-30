@@ -55,21 +55,24 @@ export default function RhPage() {
 
   if (!autenticado) {
     return (
-      <main className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
+      <main className="min-h-screen bg-sky-50 flex items-center justify-center p-4">
         <div className="bg-white rounded-2xl shadow-lg p-8 w-full max-w-sm">
-          <h1 className="text-xl font-bold text-gray-800 mb-6 text-center">Painel RH</h1>
+          <div className="text-center mb-6">
+            <img src="/logo-hug.png" alt="Logo HUG" className="w-24 h-auto mx-auto mb-3" />
+            <h1 className="text-xl font-bold text-sky-700">Painel RH</h1>
+          </div>
           <form onSubmit={login} className="space-y-4">
             <input
               type="password"
               value={senha}
               onChange={(e) => setSenha(e.target.value)}
               placeholder="Senha do RH"
-              className="w-full border border-gray-300 rounded-lg px-4 py-3 text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-400"
+              className="w-full border border-sky-200 rounded-lg px-4 py-3 text-gray-800 focus:outline-none focus:ring-2 focus:ring-sky-400"
               required
               autoFocus
             />
             {erro && <p className="text-red-600 text-sm">{erro}</p>}
-            <button className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-lg transition-colors">
+            <button className="w-full bg-sky-500 hover:bg-sky-600 text-white font-semibold py-3 rounded-lg transition-colors">
               Entrar
             </button>
           </form>
@@ -82,10 +85,13 @@ export default function RhPage() {
   }
 
   return (
-    <main className="min-h-screen bg-gray-50 p-6">
+    <main className="min-h-screen bg-sky-50 p-6">
       <div className="max-w-5xl mx-auto space-y-6">
         <div className="flex justify-between items-center">
-          <h1 className="text-2xl font-bold text-gray-800">Painel RH</h1>
+          <div className="flex items-center gap-3">
+            <img src="/logo-hug.png" alt="Logo HUG" className="w-16 h-auto" />
+            <h1 className="text-2xl font-bold text-sky-700">Painel RH</h1>
+          </div>
           <button onClick={() => setAutenticado(false)} className="text-sm text-gray-700 hover:underline">Sair</button>
         </div>
 
@@ -94,7 +100,7 @@ export default function RhPage() {
           {/* Coluna esquerda — Cadastro */}
           <div className="w-72 shrink-0">
             <div className="bg-white rounded-xl shadow p-6">
-              <h2 className="font-semibold text-gray-700 mb-4">Novo Colaborador</h2>
+              <h2 className="font-semibold text-sky-700 mb-4">Novo Colaborador</h2>
               <form onSubmit={cadastrar} className="space-y-3">
                 <div>
                   <label className="block text-xs font-medium text-gray-600 mb-1">Senha</label>
@@ -103,7 +109,7 @@ export default function RhPage() {
                     value={novoSenha}
                     onChange={(e) => setNovoSenha(e.target.value)}
                     placeholder="Ex: 12"
-                    className="w-full border border-gray-300 rounded-lg px-3 py-2 text-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-sky-400"
+                    className="w-full border border-sky-200 rounded-lg px-3 py-2 text-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-sky-400"
                     required
                   />
                 </div>
@@ -114,7 +120,7 @@ export default function RhPage() {
                     value={novoNome}
                     onChange={(e) => setNovoNome(e.target.value)}
                     placeholder="Ex: CARLOS"
-                    className="w-full border border-gray-300 rounded-lg px-3 py-2 text-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-sky-400"
+                    className="w-full border border-sky-200 rounded-lg px-3 py-2 text-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-sky-400"
                     required
                   />
                 </div>
@@ -125,7 +131,7 @@ export default function RhPage() {
                     value={novoSetor}
                     onChange={(e) => setNovoSetor(e.target.value)}
                     placeholder="Ex: FINANCEIRO"
-                    className="w-full border border-gray-300 rounded-lg px-3 py-2 text-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-sky-400"
+                    className="w-full border border-sky-200 rounded-lg px-3 py-2 text-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-sky-400"
                     required
                   />
                 </div>
@@ -149,17 +155,17 @@ export default function RhPage() {
 
             {/* Relatório */}
             <div className="bg-white rounded-xl shadow p-6">
-              <h2 className="font-semibold text-gray-700 mb-4">Exportar Relatório Mensal</h2>
+              <h2 className="font-semibold text-sky-700 mb-4">Exportar Relatório Mensal</h2>
               <div className="flex gap-3">
                 <input
                   type="month"
                   value={mes}
                   onChange={(e) => setMes(e.target.value)}
-                  className="border border-gray-300 rounded-lg px-3 py-2 text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                  className="border border-sky-200 rounded-lg px-3 py-2 text-gray-800 focus:outline-none focus:ring-2 focus:ring-sky-400"
                 />
                 <button
                   onClick={exportarRelatorio}
-                  className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-5 py-2 rounded-lg transition-colors"
+                  className="bg-sky-500 hover:bg-sky-600 text-white font-semibold px-5 py-2 rounded-lg transition-colors"
                 >
                   Baixar CSV
                 </button>
@@ -169,13 +175,13 @@ export default function RhPage() {
 
             {/* Lista de colaboradores */}
             <div className="bg-white rounded-xl shadow p-6">
-              <h2 className="font-semibold text-gray-700 mb-4">Colaboradores ({colaboradores.length})</h2>
+              <h2 className="font-semibold text-sky-700 mb-4">Colaboradores ({colaboradores.length})</h2>
               {colaboradores.length === 0 ? (
                 <p className="text-gray-400 text-sm">Nenhum colaborador cadastrado.</p>
               ) : (
                 <table className="w-full text-sm">
                   <thead>
-                    <tr className="text-left text-gray-500 border-b">
+                    <tr className="text-left text-sky-600 border-b border-sky-100">
                       <th className="pb-2">Senha</th>
                       <th className="pb-2">Nome</th>
                       <th className="pb-2">Setor</th>
@@ -184,14 +190,14 @@ export default function RhPage() {
                   </thead>
                   <tbody>
                     {colaboradores.map((c) => (
-                      <tr key={c.matricula} className="border-b last:border-0">
+                      <tr key={c.matricula} className="border-b border-sky-50 last:border-0">
                         <td className="py-2 text-gray-600">{c.matricula}</td>
                         <td className="py-2 font-medium text-gray-800">{c.nome}</td>
                         <td className="py-2 text-gray-600">{c.departamento}</td>
                         <td className="py-2">
                           <button
                             onClick={() => remover(c.matricula)}
-                            className="text-red-500 hover:text-red-700 text-xs"
+                            className="text-red-400 hover:text-red-600 text-xs"
                           >
                             Remover
                           </button>
