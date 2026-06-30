@@ -25,7 +25,7 @@ export async function POST(req: NextRequest) {
   )
 
   if (jaConfirmou.rows.length > 0) {
-    return NextResponse.json({ erro: 'Você já confirmou seu almoço hoje.' }, { status: 409 })
+    return NextResponse.json({ erro: 'Você já confirmou o almoço hoje.' }, { status: 409 })
   }
 
   await db.query(
