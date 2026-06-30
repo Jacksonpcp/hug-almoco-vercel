@@ -36,7 +36,7 @@ export default function LoginPage() {
     <main className="min-h-screen bg-sky-50 flex items-center justify-center p-4">
       <div className="bg-white rounded-2xl shadow-lg p-8 w-full max-w-sm">
         <div className="flex items-center gap-4 mb-8">
-          <img src="/icon.png" alt="Logo HUG" className="w-20 h-auto" />
+          <img src="/logo-hug.png" alt="Logo HUG" className="w-20 h-auto" />
           <div>
             <div className="text-4xl mb-1">🍽️</div>
             <h1 className="text-2xl font-bold text-sky-700">HUG Almoço</h1>
