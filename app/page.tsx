@@ -33,11 +33,11 @@ export default function LoginPage() {
   }
 
   return (
-    <main className="min-h-screen bg-orange-50 flex items-center justify-center p-4">
+    <main className="min-h-screen bg-sky-50 flex items-center justify-center p-4">
       <div className="bg-white rounded-2xl shadow-lg p-8 w-full max-w-sm">
         <div className="text-center mb-8">
           <div className="text-5xl mb-3">🍽️</div>
-          <h1 className="text-2xl font-bold text-gray-800">HUG Almoço</h1>
+          <h1 className="text-2xl font-bold text-sky-700">HUG Almoço</h1>
           <p className="text-gray-500 text-sm mt-1">Confirme sua presença no almoço</p>
         </div>
 
@@ -51,7 +51,7 @@ export default function LoginPage() {
               value={matricula}
               onChange={(e) => setMatricula(e.target.value)}
               placeholder="Digite sua matrícula"
-              className="w-full border border-gray-300 rounded-lg px-4 py-3 text-gray-800 focus:outline-none focus:ring-2 focus:ring-orange-400"
+              className="w-full border border-sky-200 rounded-lg px-4 py-3 text-gray-800 focus:outline-none focus:ring-2 focus:ring-sky-400"
               required
               autoFocus
             />
@@ -66,7 +66,7 @@ export default function LoginPage() {
           <button
             type="submit"
             disabled={carregando}
-            className="w-full bg-orange-500 hover:bg-orange-600 disabled:opacity-50 text-white font-semibold py-3 rounded-lg transition-colors"
+            className="w-full bg-sky-500 hover:bg-sky-600 disabled:opacity-50 text-white font-semibold py-3 rounded-lg transition-colors"
           >
             {carregando ? 'Entrando...' : 'Entrar'}
           </button>

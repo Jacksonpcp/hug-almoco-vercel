@@ -58,10 +58,10 @@ export default function ConfirmarPage() {
   if (!colaborador) return null
 
   return (
-    <main className="min-h-screen bg-orange-50 flex items-center justify-center p-4">
+    <main className="min-h-screen bg-sky-50 flex items-center justify-center p-4">
       <div className="bg-white rounded-2xl shadow-lg p-8 w-full max-w-sm text-center">
         <div className="text-5xl mb-4">🍽️</div>
-        <h1 className="text-xl font-bold text-gray-800">{colaborador.nome}</h1>
+        <h1 className="text-xl font-bold text-sky-700">{colaborador.nome}</h1>
         <p className="text-gray-500 text-sm mb-6">Matrícula: {colaborador.matricula}</p>
 
         {confirmouAgora && (
@@ -72,7 +72,7 @@ export default function ConfirmarPage() {
         )}
 
         {jaConfirmouAntes && !confirmouAgora && (
-          <div className="bg-yellow-50 border border-yellow-200 text-yellow-800 rounded-xl p-4 mb-4">
+          <div className="bg-sky-50 border border-sky-200 text-sky-800 rounded-xl p-4 mb-4">
             <div className="text-3xl mb-2">⚠️</div>
             <p className="font-semibold">Você já confirmou o almoço hoje.</p>
           </div>
@@ -97,7 +97,7 @@ export default function ConfirmarPage() {
             <button
               onClick={confirmar}
               disabled={carregando}
-              className="w-full bg-orange-500 hover:bg-orange-600 disabled:opacity-50 text-white font-semibold py-3 rounded-lg transition-colors mb-3"
+              className="w-full bg-sky-500 hover:bg-sky-600 disabled:opacity-50 text-white font-semibold py-3 rounded-lg transition-colors mb-3"
             >
               {carregando ? 'Confirmando...' : '✅ Sim, vou almoçar'}
             </button>
@@ -106,7 +106,7 @@ export default function ConfirmarPage() {
 
         <button
           onClick={sair}
-          className="w-full text-gray-500 hover:text-gray-700 text-sm py-2 transition-colors"
+          className="w-full text-gray-400 hover:text-gray-600 text-sm py-2 transition-colors"
         >
           Sair
         </button>
