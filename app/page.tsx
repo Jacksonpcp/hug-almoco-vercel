@@ -35,10 +35,13 @@ export default function LoginPage() {
   return (
     <main className="min-h-screen bg-sky-50 flex items-center justify-center p-4">
       <div className="bg-white rounded-2xl shadow-lg p-8 w-full max-w-sm">
-        <div className="text-center mb-8">
-          <div className="text-5xl mb-3">🍽️</div>
-          <h1 className="text-2xl font-bold text-sky-700">HUG Almoço</h1>
-          <p className="text-gray-500 text-sm mt-1">Confirme sua presença no almoço hoje.</p>
+        <div className="flex items-center gap-4 mb-8">
+          <img src="/icon.png" alt="Logo HUG" className="w-20 h-auto" />
+          <div>
+            <div className="text-4xl mb-1">🍽️</div>
+            <h1 className="text-2xl font-bold text-sky-700">HUG Almoço</h1>
+            <p className="text-gray-500 text-sm mt-1">Confirme sua presença no almoço hoje.</p>
+          </div>
         </div>
 
         <form onSubmit={handleLogin} className="space-y-4">
