@@ -62,7 +62,11 @@ export default function ConfirmarPage() {
   if (!colaborador) return null
 
   return (
-    <main className="min-h-screen bg-sky-50 flex items-center justify-center p-4">
+    <main className="min-h-screen bg-sky-50 p-4">
+      <div className="p-2">
+        <img src="/logo-hug.png" alt="Logo HUG" className="w-24 h-auto mix-blend-multiply" />
+      </div>
+      <div className="flex items-center justify-center" style={{ minHeight: 'calc(100vh - 80px)' }}>
       <div className="bg-white rounded-2xl shadow-lg p-8 w-full max-w-sm text-center">
         <div className="text-5xl mb-4">🍽️</div>
         <h1 className="text-xl font-bold text-sky-700">{colaborador.nome}</h1>
@@ -114,6 +118,7 @@ export default function ConfirmarPage() {
         >
           Sair
         </button>
+      </div>
       </div>
     </main>
   )
