@@ -14,7 +14,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "HUG Almoço",
-  description: "Confirmação de presença no almoço - HUG",
+  description: "Almoço HUG",
 };
 
 export default function RootLayout({
