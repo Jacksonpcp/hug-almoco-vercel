@@ -44,8 +44,7 @@ export default function ConfirmarPage() {
     setCarregando(false)
 
     if (!res.ok) {
-      if (res.status === 409) setJaConfirmou(true)
-      else setErro(data.erro)
+      setErro(data.erro)
       return
     }
 

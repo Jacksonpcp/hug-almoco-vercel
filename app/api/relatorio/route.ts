@@ -26,11 +26,13 @@ export async function GET(req: NextRequest) {
   )
 
   const csv = [
-    'Matrícula,Nome,Setor,Quantidade de Dias',
-    ...result.rows.map((r) => `${r.matricula},"${r.nome}","${r.departamento ?? ''}",${r.total_almocos}`),
+    'Matrícula;Nome;Setor;Quantidade de Dias',
+    ...result.rows.map((r) => `${r.matricula};"${r.nome}";"${r.departamento ?? ''}";${r.total_almocos}`),
   ].join('\n')
 
-  return new NextResponse(csv, {
+  const bom = '﻿'
+
+  return new NextResponse(bom + csv, {
     headers: {
       'Content-Type': 'text/csv; charset=utf-8',
       'Content-Disposition': `attachment; filename="relatorio-almoco-${mes}.csv"`,
