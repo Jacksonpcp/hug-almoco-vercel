@@ -11,8 +11,8 @@ export async function POST(req: NextRequest) {
   const agora = new Date(new Date().toLocaleString('en-US', { timeZone: 'America/Sao_Paulo' }))
   const hora = agora.getHours()
 
-  if (hora < 5 || hora >= 9) {
-    return NextResponse.json({ erro: 'Confirmações aceitas somente entre 5h e 9h.' }, { status: 403 })
+  if (hora < 14 || hora >= 16) {
+    return NextResponse.json({ erro: 'Confirmações aceitas somente entre 14h e 16h.' }, { status: 403 })
   }
 
   const hoje = agora.toISOString().slice(0, 10)
