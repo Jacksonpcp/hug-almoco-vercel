@@ -4,7 +4,8 @@ let pool: Pool
 
 export function getPool(): Pool {
   if (!pool) {
-    pool = new Pool({ connectionString: process.env.DATABASE_URL, ssl: { rejectUnauthorized: false } })
+    const connectionString = process.env.DATABASE_URL!.replace('&channel_binding=require', '')
+    pool = new Pool({ connectionString, ssl: { rejectUnauthorized: false } })
   }
   return pool
 }
