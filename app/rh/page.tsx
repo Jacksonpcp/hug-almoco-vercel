@@ -7,9 +7,13 @@ export default function RhPage() {
   const [autenticado, setAutenticado] = useState(false)
   const [erro, setErro] = useState('')
   const [mes, setMes] = useState(() => new Date().toISOString().slice(0, 7))
-  const [importJson, setImportJson] = useState('')
   const [mensagem, setMensagem] = useState('')
   const [colaboradores, setColaboradores] = useState<{ matricula: string; nome: string; departamento: string }[]>([])
+
+  const [novoSenha, setNovoSenha] = useState('')
+  const [novoNome, setNovoNome] = useState('')
+  const [novoSetor, setNovoSetor] = useState('')
+  const [msgCadastro, setMsgCadastro] = useState('')
 
   async function login(e: React.FormEvent) {
     e.preventDefault()
@@ -21,25 +25,22 @@ export default function RhPage() {
     setErro('')
   }
 
-  async function importar() {
-    setMensagem('')
-    try {
-      const lista = JSON.parse(importJson)
-      const res = await fetch(`/api/colaboradores?senha=${senha}`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ colaboradores: lista }),
-      })
-      const data = await res.json()
-      setMensagem(data.mensagem ?? data.erro)
-      if (res.ok) {
-        const atualizado = await fetch(`/api/colaboradores?senha=${senha}`)
-        setColaboradores((await atualizado.json()).colaboradores)
-        setImportJson('')
-      }
-    } catch {
-      setMensagem('JSON inválido. Verifique o formato.')
-    }
+  async function cadastrar(e: React.FormEvent) {
+    e.preventDefault()
+    setMsgCadastro('')
+    const res = await fetch(`/api/colaboradores?senha=${senha}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ colaboradores: [{ matricula: novoSenha, nome: novoNome.toUpperCase(), departamento: novoSetor.toUpperCase() }] }),
+    })
+    const data = await res.json()
+    if (!res.ok) { setMsgCadastro(data.erro); return }
+    setMsgCadastro('Colaborador cadastrado com sucesso!')
+    setNovoSenha('')
+    setNovoNome('')
+    setNovoSetor('')
+    const atualizado = await fetch(`/api/colaboradores?senha=${senha}`)
+    setColaboradores((await atualizado.json()).colaboradores)
   }
 
   async function remover(matricula: string) {
@@ -72,7 +73,7 @@ export default function RhPage() {
               Entrar
             </button>
           </form>
-          <p className="text-center text-xs text-gray-400 mt-4">
+          <p className="text-center text-xs mt-4">
             <a href="/" className="text-gray-700 hover:underline">Voltar ao app</a>
           </p>
         </div>
@@ -82,87 +83,127 @@ export default function RhPage() {
 
   return (
     <main className="min-h-screen bg-gray-50 p-6">
-      <div className="max-w-3xl mx-auto space-y-6">
+      <div className="max-w-5xl mx-auto space-y-6">
         <div className="flex justify-between items-center">
           <h1 className="text-2xl font-bold text-gray-800">Painel RH</h1>
-          <button onClick={() => setAutenticado(false)} className="text-sm text-gray-500 hover:underline">Sair</button>
+          <button onClick={() => setAutenticado(false)} className="text-sm text-gray-700 hover:underline">Sair</button>
         </div>
 
-        {/* Relatório */}
-        <div className="bg-white rounded-xl shadow p-6">
-          <h2 className="font-semibold text-gray-700 mb-4">Exportar Relatório Mensal</h2>
-          <div className="flex gap-3">
-            <input
-              type="month"
-              value={mes}
-              onChange={(e) => setMes(e.target.value)}
-              className="border border-gray-300 rounded-lg px-3 py-2 text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-400"
-            />
-            <button
-              onClick={exportarRelatorio}
-              className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-5 py-2 rounded-lg transition-colors"
-            >
-              Baixar CSV
-            </button>
+        <div className="flex gap-6 items-start">
+
+          {/* Coluna esquerda — Cadastro */}
+          <div className="w-72 shrink-0">
+            <div className="bg-white rounded-xl shadow p-6">
+              <h2 className="font-semibold text-gray-700 mb-4">Novo Colaborador</h2>
+              <form onSubmit={cadastrar} className="space-y-3">
+                <div>
+                  <label className="block text-xs font-medium text-gray-600 mb-1">Senha</label>
+                  <input
+                    type="text"
+                    value={novoSenha}
+                    onChange={(e) => setNovoSenha(e.target.value)}
+                    placeholder="Ex: 12"
+                    className="w-full border border-gray-300 rounded-lg px-3 py-2 text-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-sky-400"
+                    required
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-medium text-gray-600 mb-1">Nome</label>
+                  <input
+                    type="text"
+                    value={novoNome}
+                    onChange={(e) => setNovoNome(e.target.value)}
+                    placeholder="Ex: CARLOS"
+                    className="w-full border border-gray-300 rounded-lg px-3 py-2 text-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-sky-400"
+                    required
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-medium text-gray-600 mb-1">Setor</label>
+                  <input
+                    type="text"
+                    value={novoSetor}
+                    onChange={(e) => setNovoSetor(e.target.value)}
+                    placeholder="Ex: FINANCEIRO"
+                    className="w-full border border-gray-300 rounded-lg px-3 py-2 text-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-sky-400"
+                    required
+                  />
+                </div>
+                <button
+                  type="submit"
+                  className="w-full bg-sky-500 hover:bg-sky-600 text-white font-semibold py-2 rounded-lg transition-colors text-sm"
+                >
+                  Incluir Colaborador
+                </button>
+                {msgCadastro && (
+                  <p className={`text-xs mt-1 ${msgCadastro.includes('sucesso') ? 'text-green-600' : 'text-red-600'}`}>
+                    {msgCadastro}
+                  </p>
+                )}
+              </form>
+            </div>
           </div>
-        </div>
 
-        {/* Importar colaboradores */}
-        <div className="bg-white rounded-xl shadow p-6">
-          <h2 className="font-semibold text-gray-700 mb-2">Importar Colaboradores (JSON)</h2>
-          <p className="text-xs text-gray-400 mb-3">
-            Formato: <code>[{'{'}&#34;matricula&#34;:&#34;001&#34;,&#34;nome&#34;:&#34;João&#34;,&#34;departamento&#34;:&#34;TI&#34;{'}'}]</code>
-          </p>
-          <textarea
-            value={importJson}
-            onChange={(e) => setImportJson(e.target.value)}
-            rows={4}
-            className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm font-mono focus:outline-none focus:ring-2 focus:ring-blue-400 mb-3"
-            placeholder='[{"matricula":"001","nome":"João Silva","departamento":"TI"}]'
-          />
-          <button
-            onClick={importar}
-            className="bg-green-600 hover:bg-green-700 text-white font-semibold px-5 py-2 rounded-lg transition-colors"
-          >
-            Importar
-          </button>
-          {mensagem && <p className="mt-2 text-sm text-gray-600">{mensagem}</p>}
-        </div>
+          {/* Coluna direita — Relatório e lista */}
+          <div className="flex-1 space-y-6">
 
-        {/* Lista de colaboradores */}
-        <div className="bg-white rounded-xl shadow p-6">
-          <h2 className="font-semibold text-gray-700 mb-4">Colaboradores ({colaboradores.length})</h2>
-          {colaboradores.length === 0 ? (
-            <p className="text-gray-400 text-sm">Nenhum colaborador cadastrado.</p>
-          ) : (
-            <table className="w-full text-sm">
-              <thead>
-                <tr className="text-left text-gray-500 border-b">
-                  <th className="pb-2">Matrícula</th>
-                  <th className="pb-2">Nome</th>
-                  <th className="pb-2">Departamento</th>
-                  <th className="pb-2"></th>
-                </tr>
-              </thead>
-              <tbody>
-                {colaboradores.map((c) => (
-                  <tr key={c.matricula} className="border-b last:border-0">
-                    <td className="py-2 text-gray-600">{c.matricula}</td>
-                    <td className="py-2 font-medium text-gray-800">{c.nome}</td>
-                    <td className="py-2 text-gray-600">{c.departamento}</td>
-                    <td className="py-2">
-                      <button
-                        onClick={() => remover(c.matricula)}
-                        className="text-red-500 hover:text-red-700 text-xs"
-                      >
-                        Remover
-                      </button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          )}
+            {/* Relatório */}
+            <div className="bg-white rounded-xl shadow p-6">
+              <h2 className="font-semibold text-gray-700 mb-4">Exportar Relatório Mensal</h2>
+              <div className="flex gap-3">
+                <input
+                  type="month"
+                  value={mes}
+                  onChange={(e) => setMes(e.target.value)}
+                  className="border border-gray-300 rounded-lg px-3 py-2 text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                />
+                <button
+                  onClick={exportarRelatorio}
+                  className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-5 py-2 rounded-lg transition-colors"
+                >
+                  Baixar CSV
+                </button>
+              </div>
+              {mensagem && <p className="mt-2 text-sm text-gray-600">{mensagem}</p>}
+            </div>
+
+            {/* Lista de colaboradores */}
+            <div className="bg-white rounded-xl shadow p-6">
+              <h2 className="font-semibold text-gray-700 mb-4">Colaboradores ({colaboradores.length})</h2>
+              {colaboradores.length === 0 ? (
+                <p className="text-gray-400 text-sm">Nenhum colaborador cadastrado.</p>
+              ) : (
+                <table className="w-full text-sm">
+                  <thead>
+                    <tr className="text-left text-gray-500 border-b">
+                      <th className="pb-2">Senha</th>
+                      <th className="pb-2">Nome</th>
+                      <th className="pb-2">Setor</th>
+                      <th className="pb-2"></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {colaboradores.map((c) => (
+                      <tr key={c.matricula} className="border-b last:border-0">
+                        <td className="py-2 text-gray-600">{c.matricula}</td>
+                        <td className="py-2 font-medium text-gray-800">{c.nome}</td>
+                        <td className="py-2 text-gray-600">{c.departamento}</td>
+                        <td className="py-2">
+                          <button
+                            onClick={() => remover(c.matricula)}
+                            className="text-red-500 hover:text-red-700 text-xs"
+                          >
+                            Remover
+                          </button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              )}
+            </div>
+
+          </div>
         </div>
       </div>
     </main>
