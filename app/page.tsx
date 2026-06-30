@@ -44,13 +44,13 @@ export default function LoginPage() {
         <form onSubmit={handleLogin} className="space-y-4">
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
-              Matrícula
+              Senha
             </label>
             <input
               type="text"
               value={matricula}
               onChange={(e) => setMatricula(e.target.value)}
-              placeholder="Digite sua matrícula"
+              placeholder="Digite sua senha"
               className="w-full border border-sky-200 rounded-lg px-4 py-3 text-gray-800 focus:outline-none focus:ring-2 focus:ring-sky-400"
               required
               autoFocus
@@ -73,7 +73,7 @@ export default function LoginPage() {
         </form>
 
         <p className="text-center text-xs text-gray-400 mt-6">
-          <a href="/rh" className="hover:underline">Acesso RH</a>
+          <a href="/rh" className="text-gray-700 hover:underline">Acesso RH</a>
         </p>
       </div>
     </main>

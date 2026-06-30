@@ -66,7 +66,7 @@ export default function ConfirmarPage() {
       <div className="bg-white rounded-2xl shadow-lg p-8 w-full max-w-sm text-center">
         <div className="text-5xl mb-4">🍽️</div>
         <h1 className="text-xl font-bold text-sky-700">{colaborador.nome}</h1>
-        <p className="text-gray-500 text-sm mb-6">Matrícula: {colaborador.matricula}</p>
+        <p className="text-gray-500 text-sm mb-6">Senha: {colaborador.matricula}</p>
 
         {confirmouAgora && (
           <div className="bg-green-50 border border-green-200 text-green-700 rounded-xl p-4 mb-4">
@@ -110,7 +110,7 @@ export default function ConfirmarPage() {
 
         <button
           onClick={sair}
-          className="w-full text-gray-400 hover:text-gray-600 text-sm py-2 transition-colors"
+          className="w-full text-gray-700 hover:text-gray-900 text-sm py-2 transition-colors"
         >
           Sair
         </button>
