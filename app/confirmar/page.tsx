@@ -20,8 +20,12 @@ export default function ConfirmarPage() {
     const c: Colaborador = JSON.parse(dados)
     setColaborador(c)
 
-    const hora = new Date().getHours()
-    if (hora < 14 || hora >= 16) setForaDoPrazo(true)
+    const agora = new Date()
+    const hora = agora.getHours()
+    const minuto = agora.getMinutes()
+    const aposInicio = hora >= 12
+    const antesDoFim = hora < 17 || (hora === 17 && minuto < 30)
+    if (!aposInicio || !antesDoFim) setForaDoPrazo(true)
 
     fetch(`/api/confirmar?matricula=${c.matricula}`)
       .then((r) => r.json())
@@ -82,7 +86,7 @@ export default function ConfirmarPage() {
           <div className="bg-yellow-50 border border-yellow-200 text-yellow-800 rounded-xl p-4 mb-4">
             <div className="text-3xl mb-2">⏰</div>
             <p className="font-semibold">Fora do horário</p>
-            <p className="text-sm mt-1">Confirmações aceitas somente entre 14h e 16h.</p>
+            <p className="text-sm mt-1">Confirmações aceitas somente entre 12h e 17h30.</p>
           </div>
         )}
 
