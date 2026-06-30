@@ -7,9 +7,9 @@ type Colaborador = { matricula: string; nome: string; departamento: string }
 
 export default function ConfirmarPage() {
   const [colaborador, setColaborador] = useState<Colaborador | null>(null)
-  const [jaConfirmou, setJaConfirmou] = useState(false)
+  const [jaConfirmouAntes, setJaConfirmouAntes] = useState(false)
+  const [confirmouAgora, setConfirmouAgora] = useState(false)
   const [foraDoPrazo, setForaDoPrazo] = useState(false)
-  const [mensagem, setMensagem] = useState('')
   const [erro, setErro] = useState('')
   const [carregando, setCarregando] = useState(false)
   const router = useRouter()
@@ -20,13 +20,12 @@ export default function ConfirmarPage() {
     const c: Colaborador = JSON.parse(dados)
     setColaborador(c)
 
-    const agora = new Date()
-    const hora = agora.getHours()
+    const hora = new Date().getHours()
     if (hora < 14 || hora >= 16) setForaDoPrazo(true)
 
     fetch(`/api/confirmar?matricula=${c.matricula}`)
       .then((r) => r.json())
-      .then((d) => setJaConfirmou(d.confirmado))
+      .then((d) => setJaConfirmouAntes(d.confirmado))
   }, [router])
 
   async function confirmar() {
@@ -48,8 +47,7 @@ export default function ConfirmarPage() {
       return
     }
 
-    setMensagem(data.mensagem)
-    setJaConfirmou(true)
+    setConfirmouAgora(true)
   }
 
   function sair() {
@@ -66,15 +64,21 @@ export default function ConfirmarPage() {
         <h1 className="text-xl font-bold text-gray-800">{colaborador.nome}</h1>
         <p className="text-gray-500 text-sm mb-6">Matrícula: {colaborador.matricula}</p>
 
-        {jaConfirmou && (
+        {confirmouAgora && (
           <div className="bg-green-50 border border-green-200 text-green-700 rounded-xl p-4 mb-4">
             <div className="text-3xl mb-2">✅</div>
             <p className="font-semibold">Almoço confirmado!</p>
-            {mensagem && <p className="text-sm mt-1">{mensagem}</p>}
           </div>
         )}
 
-        {foraDoPrazo && !jaConfirmou && (
+        {jaConfirmouAntes && !confirmouAgora && (
+          <div className="bg-yellow-50 border border-yellow-200 text-yellow-800 rounded-xl p-4 mb-4">
+            <div className="text-3xl mb-2">⚠️</div>
+            <p className="font-semibold">Você já confirmou o almoço hoje.</p>
+          </div>
+        )}
+
+        {foraDoPrazo && !jaConfirmouAntes && !confirmouAgora && (
           <div className="bg-yellow-50 border border-yellow-200 text-yellow-800 rounded-xl p-4 mb-4">
             <div className="text-3xl mb-2">⏰</div>
             <p className="font-semibold">Fora do horário</p>
@@ -82,7 +86,7 @@ export default function ConfirmarPage() {
           </div>
         )}
 
-        {!jaConfirmou && !foraDoPrazo && (
+        {!jaConfirmouAntes && !confirmouAgora && !foraDoPrazo && (
           <>
             <p className="text-gray-600 mb-6">Você vai almoçar hoje?</p>
             {erro && (
