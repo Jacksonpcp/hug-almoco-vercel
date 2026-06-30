@@ -73,7 +73,7 @@ export default function RhPage() {
             </button>
           </form>
           <p className="text-center text-xs text-gray-400 mt-4">
-            <a href="/" className="hover:underline">Voltar ao app</a>
+            <a href="/" className="text-gray-700 hover:underline">Voltar ao app</a>
           </p>
         </div>
       </main>
