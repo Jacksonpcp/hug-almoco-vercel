@@ -25,12 +25,28 @@ export async function POST(req: NextRequest) {
 
   await initSchema()
   const db = getPool()
+  const cadastroIndividual = searchParams.get('modo') === 'cadastro'
+
   for (const c of colaboradores) {
-    await db.query(
-      `INSERT INTO colaboradores (matricula, nome, departamento) VALUES ($1, $2, $3)
-       ON CONFLICT(matricula) DO UPDATE SET nome=EXCLUDED.nome, departamento=EXCLUDED.departamento`,
-      [c.matricula, c.nome, c.departamento ?? null]
-    )
+    if (cadastroIndividual) {
+      try {
+        await db.query(
+          'INSERT INTO colaboradores (matricula, nome, departamento) VALUES ($1, $2, $3)',
+          [c.matricula, c.nome, c.departamento ?? null]
+        )
+      } catch (err: any) {
+        if (err.code === '23505') {
+          return NextResponse.json({ erro: 'Esta senha já está em uso por outro usuário.' }, { status: 409 })
+        }
+        throw err
+      }
+    } else {
+      await db.query(
+        `INSERT INTO colaboradores (matricula, nome, departamento) VALUES ($1, $2, $3)
+         ON CONFLICT(matricula) DO UPDATE SET nome=EXCLUDED.nome, departamento=EXCLUDED.departamento`,
+        [c.matricula, c.nome, c.departamento ?? null]
+      )
+    }
   }
 
   return NextResponse.json({ mensagem: `${colaboradores.length} colaborador(es) importado(s).` })

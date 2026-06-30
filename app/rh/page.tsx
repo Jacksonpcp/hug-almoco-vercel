@@ -28,7 +28,7 @@ export default function RhPage() {
   async function cadastrar(e: React.FormEvent) {
     e.preventDefault()
     setMsgCadastro('')
-    const res = await fetch(`/api/colaboradores?senha=${senha}`, {
+    const res = await fetch(`/api/colaboradores?senha=${senha}&modo=cadastro`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ colaboradores: [{ matricula: novoSenha, nome: novoNome.toUpperCase(), departamento: novoSetor.toUpperCase() }] }),
