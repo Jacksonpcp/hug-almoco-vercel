@@ -35,7 +35,7 @@ export default function LoginPage() {
   return (
     <main className="min-h-screen bg-sky-50 p-4">
       <div className="p-2">
-        <img src="/logo-hug.png" alt="Logo HUG" className="w-24 h-auto" />
+        <img src="/logo-hug.png" alt="Logo HUG" className="w-24 h-auto mix-blend-multiply" />
       </div>
       <div className="flex items-center justify-center" style={{ minHeight: 'calc(100vh - 80px)' }}>
       <div className="bg-white rounded-2xl shadow-lg p-8 w-full max-w-sm">
