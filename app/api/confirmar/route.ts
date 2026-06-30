@@ -11,11 +11,11 @@ export async function POST(req: NextRequest) {
   const agora = new Date(new Date().toLocaleString('en-US', { timeZone: 'America/Sao_Paulo' }))
   const hora = agora.getHours()
   const minuto = agora.getMinutes()
-  const aposInicio = hora >= 12
-  const antesDoFim = hora < 17 || (hora === 17 && minuto < 30)
+  const aposInicio = hora >= 4
+  const antesDoFim = hora < 9
 
   if (!aposInicio || !antesDoFim) {
-    return NextResponse.json({ erro: 'Confirmações aceitas somente entre 12h e 17h30.' }, { status: 403 })
+    return NextResponse.json({ erro: 'Confirmações aceitas somente entre 4h e 9h.' }, { status: 403 })
   }
 
   const hoje = agora.toISOString().slice(0, 10)

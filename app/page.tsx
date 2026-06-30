@@ -38,7 +38,7 @@ export default function LoginPage() {
         <div className="text-center mb-8">
           <div className="text-5xl mb-3">🍽️</div>
           <h1 className="text-2xl font-bold text-sky-700">HUG Almoço</h1>
-          <p className="text-gray-500 text-sm mt-1">Confirme sua presença no almoço</p>
+          <p className="text-gray-500 text-sm mt-1">Confirme sua presença no almoço hoje.</p>
         </div>
 
         <form onSubmit={handleLogin} className="space-y-4">
