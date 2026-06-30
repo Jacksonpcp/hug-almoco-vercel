@@ -13,7 +13,7 @@ export async function POST(req: NextRequest) {
   const result = await db.query('SELECT * FROM colaboradores WHERE matricula = $1', [matricula.trim()])
 
   if (result.rows.length === 0) {
-    return NextResponse.json({ erro: 'Cadastro não encontrado. Favor solicitar ao RH.' }, { status: 404 })
+    return NextResponse.json({ erro: 'Cadastro não encontrato. Favor comunicar ao RH.' }, { status: 404 })
   }
 
   return NextResponse.json({ colaborador: result.rows[0] })
