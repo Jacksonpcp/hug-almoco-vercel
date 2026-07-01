@@ -58,9 +58,13 @@ export async function DELETE(req: NextRequest) {
     return NextResponse.json({ erro: 'Não autorizado.' }, { status: 401 })
   }
   const matricula = searchParams.get('matricula')
-  if (!matricula) return NextResponse.json({ erro: 'Matrícula obrigatória.' }, { status: 400 })
-
   const db = getPool()
+
+  if (!matricula) {
+    await db.query('DELETE FROM colaboradores')
+    return NextResponse.json({ mensagem: 'Todos os colaboradores removidos.' })
+  }
+
   await db.query('DELETE FROM colaboradores WHERE matricula = $1', [matricula])
   return NextResponse.json({ mensagem: 'Colaborador removido.' })
 }
