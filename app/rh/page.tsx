@@ -55,45 +55,46 @@ export default function RhPage() {
 
   if (!autenticado) {
     return (
-      <main className="min-h-screen bg-sky-50 flex items-center justify-center p-4">
-        <div className="bg-white rounded-2xl shadow-lg p-8 w-full max-w-sm">
-          <div className="text-center mb-6">
-            <img src="/logo-hug.png" alt="Logo HUG" className="w-24 h-auto mx-auto mb-3" />
-            <h1 className="text-xl font-bold text-sky-700">Painel RH</h1>
+      <main className="min-h-screen bg-sky-50 p-4">
+        <div className="p-2">
+          <img src="/logo-hug.png" alt="Logo HUG" className="w-24 h-auto mix-blend-multiply" />
+        </div>
+        <div className="flex items-center justify-center" style={{ minHeight: 'calc(100vh - 80px)' }}>
+          <div className="bg-white rounded-2xl shadow-lg p-8 w-full max-w-sm">
+            <h1 className="text-xl font-bold text-sky-700 mb-6 text-center">Painel RH</h1>
+            <form onSubmit={login} className="space-y-4">
+              <input
+                type="password"
+                value={senha}
+                onChange={(e) => setSenha(e.target.value)}
+                placeholder="Senha do RH"
+                className="w-full border border-sky-200 rounded-lg px-4 py-3 text-gray-800 focus:outline-none focus:ring-2 focus:ring-sky-400"
+                required
+                autoFocus
+              />
+              {erro && <p className="text-red-600 text-sm">{erro}</p>}
+              <button className="w-full bg-sky-500 hover:bg-sky-600 text-white font-semibold py-3 rounded-lg transition-colors">
+                Entrar
+              </button>
+            </form>
+            <p className="text-center text-xs mt-4">
+              <a href="/" className="text-gray-700 hover:underline">Voltar ao app</a>
+            </p>
           </div>
-          <form onSubmit={login} className="space-y-4">
-            <input
-              type="password"
-              value={senha}
-              onChange={(e) => setSenha(e.target.value)}
-              placeholder="Senha do RH"
-              className="w-full border border-sky-200 rounded-lg px-4 py-3 text-gray-800 focus:outline-none focus:ring-2 focus:ring-sky-400"
-              required
-              autoFocus
-            />
-            {erro && <p className="text-red-600 text-sm">{erro}</p>}
-            <button className="w-full bg-sky-500 hover:bg-sky-600 text-white font-semibold py-3 rounded-lg transition-colors">
-              Entrar
-            </button>
-          </form>
-          <p className="text-center text-xs mt-4">
-            <a href="/" className="text-gray-700 hover:underline">Voltar ao app</a>
-          </p>
         </div>
       </main>
     )
   }
 
   return (
-    <main className="min-h-screen bg-sky-50 p-6">
+    <main className="min-h-screen bg-sky-50 p-4">
+      <div className="flex justify-between items-center p-2 mb-4">
+        <img src="/logo-hug.png" alt="Logo HUG" className="w-24 h-auto mix-blend-multiply" />
+        <button onClick={() => setAutenticado(false)} className="text-sm text-gray-700 hover:underline">Sair</button>
+      </div>
+
       <div className="max-w-5xl mx-auto space-y-6">
-        <div className="flex justify-between items-center">
-          <div className="flex items-center gap-3">
-            <img src="/logo-hug.png" alt="Logo HUG" className="w-16 h-auto" />
-            <h1 className="text-2xl font-bold text-sky-700">Painel RH</h1>
-          </div>
-          <button onClick={() => setAutenticado(false)} className="text-sm text-gray-700 hover:underline">Sair</button>
-        </div>
+        <h1 className="text-2xl font-bold text-sky-700">Painel RH</h1>
 
         <div className="flex gap-6 items-start">
 
