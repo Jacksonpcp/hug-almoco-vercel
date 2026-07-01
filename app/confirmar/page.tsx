@@ -12,6 +12,7 @@ export default function ConfirmarPage() {
   const [foraDoPrazo, setForaDoPrazo] = useState(false)
   const [erro, setErro] = useState('')
   const [carregando, setCarregando] = useState(false)
+  const [verificando, setVerificando] = useState(true)
   const router = useRouter()
 
   useEffect(() => {
@@ -29,7 +30,7 @@ export default function ConfirmarPage() {
 
     fetch(`/api/confirmar?matricula=${c.matricula}`)
       .then((r) => r.json())
-      .then((d) => setJaConfirmouAntes(d.confirmado))
+      .then((d) => { setJaConfirmouAntes(d.confirmado); setVerificando(false) })
   }, [router])
 
   async function confirmar() {
@@ -59,7 +60,7 @@ export default function ConfirmarPage() {
     router.push('/')
   }
 
-  if (!colaborador) return null
+  if (!colaborador || verificando) return null
 
   return (
     <main className="min-h-screen bg-sky-50 p-4">
