@@ -61,6 +61,7 @@ export async function DELETE(req: NextRequest) {
   const db = getPool()
 
   if (!matricula) {
+    await db.query('DELETE FROM confirmacoes')
     await db.query('DELETE FROM colaboradores')
     return NextResponse.json({ mensagem: 'Todos os colaboradores removidos.' })
   }
