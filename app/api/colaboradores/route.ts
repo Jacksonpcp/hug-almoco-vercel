@@ -61,6 +61,7 @@ export async function DELETE(req: NextRequest) {
   if (!matricula) return NextResponse.json({ erro: 'Matrícula obrigatória.' }, { status: 400 })
 
   const db = getPool()
+  await db.query('DELETE FROM confirmacoes WHERE matricula = $1', [matricula])
   await db.query('DELETE FROM colaboradores WHERE matricula = $1', [matricula])
   return NextResponse.json({ mensagem: 'Colaborador removido.' })
 }
