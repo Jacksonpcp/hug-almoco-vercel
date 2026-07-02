@@ -16,18 +16,28 @@ export async function GET(req: NextRequest) {
 
   const db = getPool()
   const result = await db.query(
-    `SELECT c.matricula, col.nome, col.departamento, COUNT(*) as total_almocos
+    `SELECT
+       c.matricula,
+       col.nome,
+       c.data,
+       COUNT(*) OVER (PARTITION BY c.matricula) AS total_mes
      FROM confirmacoes c
      JOIN colaboradores col ON col.matricula = c.matricula
      WHERE c.data LIKE $1
-     GROUP BY c.matricula, col.nome, col.departamento
-     ORDER BY col.nome`,
+     ORDER BY col.nome, c.data`,
     [`${mes}%`]
   )
 
+  const formatarData = (iso: string) => {
+    const [ano, mes, dia] = iso.split('-')
+    return `${dia}/${mes}/${ano}`
+  }
+
   const csv = [
-    'Matrícula;Nome;Setor;Quantidade de Dias',
-    ...result.rows.map((r) => `${r.matricula};"${r.nome}";"${r.departamento ?? ''}";${r.total_almocos}`),
+    'Senha;Nome;Data;Total no Mês',
+    ...result.rows.map((r) =>
+      `${r.matricula};"${r.nome}";${formatarData(r.data)};${r.total_mes}`
+    ),
   ].join('\n')
 
   const bom = '﻿'
