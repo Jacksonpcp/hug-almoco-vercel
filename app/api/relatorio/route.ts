@@ -19,8 +19,7 @@ export async function GET(req: NextRequest) {
     `SELECT
        c.matricula,
        col.nome,
-       c.data,
-       COUNT(*) OVER (PARTITION BY c.matricula) AS total_mes
+       c.data
      FROM confirmacoes c
      JOIN colaboradores col ON col.matricula = c.matricula
      WHERE c.data LIKE $1
@@ -29,14 +28,14 @@ export async function GET(req: NextRequest) {
   )
 
   const formatarData = (iso: string) => {
-    const [ano, mes, dia] = iso.split('-')
-    return `${dia}/${mes}/${ano}`
+    const [ano, m, dia] = iso.split('-')
+    return `${dia}/${m}/${ano}`
   }
 
   const csv = [
-    'Senha;Nome;Data;Total no Mês',
+    'Senha;Nome;Data;Almoço',
     ...result.rows.map((r) =>
-      `${r.matricula};"${r.nome}";${formatarData(r.data)};${r.total_mes}`
+      `${r.matricula};"${r.nome}";${formatarData(r.data)};1`
     ),
   ].join('\n')
 
