@@ -12,10 +12,10 @@ export async function POST(req: NextRequest) {
   const hora = agora.getHours()
   const minuto = agora.getMinutes()
   const aposInicio = hora >= 4
-  const antesDoFim = hora < 9
+  const antesDoFim = hora < 9 || (hora === 9 && minuto < 25)
 
   if (!aposInicio || !antesDoFim) {
-    return NextResponse.json({ erro: 'Confirmações aceitas somente entre 4h e 9h.' }, { status: 403 })
+    return NextResponse.json({ erro: 'Confirmações aceitas somente entre 4h e 9h25.' }, { status: 403 })
   }
 
   const hoje = agora.toISOString().slice(0, 10)
