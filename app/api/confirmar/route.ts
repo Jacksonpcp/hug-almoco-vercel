@@ -2,19 +2,21 @@ import { NextRequest, NextResponse } from 'next/server'
 import { getPool, initSchema } from '@/lib/db'
 
 export async function POST(req: NextRequest) {
+  const { searchParams } = new URL(req.url)
   const { matricula } = await req.json()
 
   if (!matricula?.trim()) {
     return NextResponse.json({ erro: 'Matrícula obrigatória.' }, { status: 400 })
   }
 
+  const isAdmin = searchParams.get('admin') === process.env.CRON_SECRET
   const agora = new Date(new Date().toLocaleString('en-US', { timeZone: 'America/Sao_Paulo' }))
   const hora = agora.getHours()
   const minuto = agora.getMinutes()
   const aposInicio = hora >= 4
   const antesDoFim = hora < 9
 
-  if (!aposInicio || !antesDoFim) {
+  if (!isAdmin && (!aposInicio || !antesDoFim)) {
     return NextResponse.json({ erro: 'Confirmações aceitas somente entre 4h e 9h.' }, { status: 403 })
   }
 
