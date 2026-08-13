@@ -52,6 +52,22 @@ export async function POST(req: NextRequest) {
   return NextResponse.json({ mensagem: `${colaboradores.length} colaborador(es) importado(s).` })
 }
 
+export async function PATCH(req: NextRequest) {
+  const { searchParams } = new URL(req.url)
+  if (searchParams.get('senha') !== process.env.RH_SENHA) {
+    return NextResponse.json({ erro: 'Não autorizado.' }, { status: 401 })
+  }
+  const matricula = searchParams.get('matricula')
+  if (!matricula) return NextResponse.json({ erro: 'Matrícula obrigatória.' }, { status: 400 })
+
+  const db = getPool()
+  const result = await db.query(
+    'UPDATE colaboradores SET ativo = NOT ativo WHERE matricula = $1 RETURNING ativo',
+    [matricula]
+  )
+  return NextResponse.json({ ativo: result.rows[0].ativo })
+}
+
 export async function DELETE(req: NextRequest) {
   const { searchParams } = new URL(req.url)
   if (searchParams.get('senha') !== process.env.RH_SENHA) {

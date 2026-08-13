@@ -16,5 +16,9 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ erro: 'Cadastro não encontrato. Favor comunicar ao RH.' }, { status: 404 })
   }
 
+  if (!result.rows[0].ativo) {
+    return NextResponse.json({ erro: 'Cadastro inativo, favor consultar o RH.' }, { status: 403 })
+  }
+
   return NextResponse.json({ colaborador: result.rows[0] })
 }

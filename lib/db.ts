@@ -16,7 +16,8 @@ export async function initSchema() {
     CREATE TABLE IF NOT EXISTS colaboradores (
       matricula TEXT PRIMARY KEY,
       nome TEXT NOT NULL,
-      departamento TEXT
+      departamento TEXT,
+      ativo BOOLEAN NOT NULL DEFAULT true
     );
     CREATE TABLE IF NOT EXISTS confirmacoes (
       id SERIAL PRIMARY KEY,
@@ -26,5 +27,6 @@ export async function initSchema() {
       UNIQUE(matricula, data),
       FOREIGN KEY(matricula) REFERENCES colaboradores(matricula)
     );
+    ALTER TABLE colaboradores ADD COLUMN IF NOT EXISTS ativo BOOLEAN NOT NULL DEFAULT true;
   `)
 }

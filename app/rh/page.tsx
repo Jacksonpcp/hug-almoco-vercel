@@ -2,13 +2,15 @@
 
 import { useState } from 'react'
 
+type Colaborador = { matricula: string; nome: string; departamento: string; ativo: boolean }
+
 export default function RhPage() {
   const [senha, setSenha] = useState('')
   const [autenticado, setAutenticado] = useState(false)
   const [erro, setErro] = useState('')
   const [mes, setMes] = useState(() => new Date().toISOString().slice(0, 7))
   const [mensagem, setMensagem] = useState('')
-  const [colaboradores, setColaboradores] = useState<{ matricula: string; nome: string; departamento: string }[]>([])
+  const [colaboradores, setColaboradores] = useState<Colaborador[]>([])
 
   const [novoSenha, setNovoSenha] = useState('')
   const [novoNome, setNovoNome] = useState('')
@@ -41,6 +43,14 @@ export default function RhPage() {
     setNovoSetor('')
     const atualizado = await fetch(`/api/colaboradores?senha=${senha}`)
     setColaboradores((await atualizado.json()).colaboradores)
+  }
+
+  async function toggleAtivo(matricula: string) {
+    const res = await fetch(`/api/colaboradores?senha=${senha}&matricula=${matricula}`, { method: 'PATCH' })
+    const data = await res.json()
+    setColaboradores((prev) =>
+      prev.map((c) => c.matricula === matricula ? { ...c, ativo: data.ativo } : c)
+    )
   }
 
   async function remover(matricula: string) {
@@ -186,6 +196,7 @@ export default function RhPage() {
                       <th className="pb-2">Senha</th>
                       <th className="pb-2">Nome</th>
                       <th className="pb-2">Setor</th>
+                      <th className="pb-2 text-center">Status</th>
                       <th className="pb-2"></th>
                     </tr>
                   </thead>
@@ -193,8 +204,22 @@ export default function RhPage() {
                     {colaboradores.map((c) => (
                       <tr key={c.matricula} className="border-b border-sky-50 last:border-0">
                         <td className="py-2 text-gray-600">{c.matricula}</td>
-                        <td className="py-2 font-medium text-gray-800">{c.nome}</td>
+                        <td className={`py-2 font-medium ${c.ativo ? 'text-gray-800' : 'text-gray-400'}`}>{c.nome}</td>
                         <td className="py-2 text-gray-600">{c.departamento}</td>
+                        <td className="py-2 text-center">
+                          <button
+                            onClick={() => toggleAtivo(c.matricula)}
+                            title={c.ativo ? 'Clique para inativar' : 'Clique para ativar'}
+                            className={`inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium transition-colors ${
+                              c.ativo
+                                ? 'bg-green-100 text-green-700 hover:bg-green-200'
+                                : 'bg-gray-100 text-gray-500 hover:bg-gray-200'
+                            }`}
+                          >
+                            <span>{c.ativo ? '● Ativo' : '● Inativo'}</span>
+                            <span className="text-xs">⇄</span>
+                          </button>
+                        </td>
                         <td className="py-2">
                           <button
                             onClick={() => remover(c.matricula)}
