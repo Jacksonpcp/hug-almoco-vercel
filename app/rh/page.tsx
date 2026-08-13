@@ -16,6 +16,7 @@ export default function RhPage() {
   const [novoNome, setNovoNome] = useState('')
   const [novoSetor, setNovoSetor] = useState('')
   const [msgCadastro, setMsgCadastro] = useState('')
+  const [busca, setBusca] = useState('')
 
   async function login(e: React.FormEvent) {
     e.preventDefault()
@@ -186,7 +187,16 @@ export default function RhPage() {
 
             {/* Lista de colaboradores */}
             <div className="bg-white rounded-xl shadow p-6">
-              <h2 className="font-semibold text-sky-700 mb-4">Colaboradores ({colaboradores.length})</h2>
+              <div className="flex items-center gap-3 mb-4">
+                <h2 className="font-semibold text-sky-700 whitespace-nowrap">Colaboradores ({colaboradores.length})</h2>
+                <input
+                  type="text"
+                  value={busca}
+                  onChange={(e) => setBusca(e.target.value)}
+                  placeholder="Buscar por nome ou senha..."
+                  className="flex-1 border border-sky-200 rounded-lg px-3 py-1.5 text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-sky-400"
+                />
+              </div>
               {colaboradores.length === 0 ? (
                 <p className="text-gray-400 text-sm">Nenhum colaborador cadastrado.</p>
               ) : (
@@ -201,7 +211,11 @@ export default function RhPage() {
                     </tr>
                   </thead>
                   <tbody>
-                    {colaboradores.map((c) => (
+                    {colaboradores.filter((c) => {
+                      const q = busca.trim().toLowerCase()
+                      if (!q) return true
+                      return c.nome.toLowerCase().includes(q) || c.matricula.toLowerCase().includes(q)
+                    }).map((c) => (
                       <tr key={c.matricula} className="border-b border-sky-50 last:border-0">
                         <td className="py-2 text-gray-600">{c.matricula}</td>
                         <td className={`py-2 font-medium ${c.ativo ? 'text-gray-800' : 'text-gray-400'}`}>{c.nome}</td>
