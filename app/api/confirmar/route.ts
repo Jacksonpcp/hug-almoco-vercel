@@ -9,13 +9,6 @@ export async function POST(req: NextRequest) {
   }
 
   const agora = new Date(new Date().toLocaleString('en-US', { timeZone: 'America/Sao_Paulo' }))
-  const hoje = agora.toISOString().slice(0, 10)
-
-  const datasBlockadas = ['2026-09-30']
-  if (datasBlockadas.includes(hoje)) {
-    return NextResponse.json({ erro: 'Confirmações não disponíveis hoje.' }, { status: 403 })
-  }
-
   const hora = agora.getHours()
   const aposInicio = hora >= 4
   const antesDoFim = hora < 9
@@ -23,6 +16,8 @@ export async function POST(req: NextRequest) {
   if (!aposInicio || !antesDoFim) {
     return NextResponse.json({ erro: 'Confirmações aceitas somente entre 4h e 9h.' }, { status: 403 })
   }
+
+  const hoje = agora.toISOString().slice(0, 10)
   await initSchema()
   const db = getPool()
 
