@@ -169,27 +169,27 @@ export default function RhPage() {
             </div>
 
             {/* Visor do dia */}
-            <div className="bg-sky-700 rounded-xl shadow p-5 text-white">
-              <div className="flex items-center justify-between mb-3">
-                <span className="text-xs font-semibold uppercase tracking-wider text-sky-200">Almoços hoje</span>
+            <div className="bg-white rounded-xl shadow p-6">
+              <div className="flex items-center justify-between mb-4">
+                <h2 className="font-semibold text-sky-700">Almoços hoje</h2>
                 <button
                   onClick={() => carregarResumo(senha)}
                   title="Atualizar"
-                  className="text-sky-300 hover:text-white text-sm transition-colors"
+                  className="text-sky-400 hover:text-sky-600 text-base transition-colors"
                 >
                   ↻
                 </button>
               </div>
               {resumo ? (
                 <>
-                  <p className="text-sky-200 text-sm mb-1">
+                  <p className="text-gray-500 text-sm mb-3">
                     {new Date(resumo.data + 'T12:00:00').toLocaleDateString('pt-BR', { weekday: 'long', day: '2-digit', month: '2-digit', year: 'numeric' })}
                   </p>
-                  <p className="text-5xl font-bold tracking-tight">{resumo.total}</p>
-                  <p className="text-sky-300 text-xs mt-1">{resumo.total === 1 ? 'confirmação' : 'confirmações'}</p>
+                  <p className="text-5xl font-bold text-sky-700 tracking-tight">{resumo.total}</p>
+                  <p className="text-gray-400 text-xs mt-1">{resumo.total === 1 ? 'confirmação' : 'confirmações'}</p>
                 </>
               ) : (
-                <p className="text-sky-300 text-sm">Carregando...</p>
+                <p className="text-gray-400 text-sm">Carregando...</p>
               )}
             </div>
 
