@@ -17,6 +17,12 @@ export default function RhPage() {
   const [novoSetor, setNovoSetor] = useState('')
   const [msgCadastro, setMsgCadastro] = useState('')
   const [busca, setBusca] = useState('')
+  const [resumo, setResumo] = useState<{ data: string; total: number } | null>(null)
+
+  async function carregarResumo(s: string) {
+    const res = await fetch(`/api/resumo?senha=${s}`)
+    if (res.ok) setResumo(await res.json())
+  }
 
   async function login(e: React.FormEvent) {
     e.preventDefault()
@@ -26,6 +32,7 @@ export default function RhPage() {
     setColaboradores(data.colaboradores)
     setAutenticado(true)
     setErro('')
+    carregarResumo(senha)
   }
 
   async function cadastrar(e: React.FormEvent) {
@@ -109,8 +116,8 @@ export default function RhPage() {
 
         <div className="flex gap-6 items-start">
 
-          {/* Coluna esquerda — Cadastro */}
-          <div className="w-72 shrink-0">
+          {/* Coluna esquerda — Cadastro + Visor */}
+          <div className="w-72 shrink-0 space-y-4">
             <div className="bg-white rounded-xl shadow p-6">
               <h2 className="font-semibold text-sky-700 mb-4">Novo Colaborador</h2>
               <form onSubmit={cadastrar} className="space-y-3">
@@ -160,6 +167,32 @@ export default function RhPage() {
                 )}
               </form>
             </div>
+
+            {/* Visor do dia */}
+            <div className="bg-sky-700 rounded-xl shadow p-5 text-white">
+              <div className="flex items-center justify-between mb-3">
+                <span className="text-xs font-semibold uppercase tracking-wider text-sky-200">Almoços hoje</span>
+                <button
+                  onClick={() => carregarResumo(senha)}
+                  title="Atualizar"
+                  className="text-sky-300 hover:text-white text-sm transition-colors"
+                >
+                  ↻
+                </button>
+              </div>
+              {resumo ? (
+                <>
+                  <p className="text-sky-200 text-sm mb-1">
+                    {new Date(resumo.data + 'T12:00:00').toLocaleDateString('pt-BR', { weekday: 'long', day: '2-digit', month: '2-digit', year: 'numeric' })}
+                  </p>
+                  <p className="text-5xl font-bold tracking-tight">{resumo.total}</p>
+                  <p className="text-sky-300 text-xs mt-1">{resumo.total === 1 ? 'confirmação' : 'confirmações'}</p>
+                </>
+              ) : (
+                <p className="text-sky-300 text-sm">Carregando...</p>
+              )}
+            </div>
+
           </div>
 
           {/* Coluna direita — Relatório e lista */}
