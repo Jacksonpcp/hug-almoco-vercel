@@ -25,7 +25,7 @@ export default function ConfirmarPage() {
     const hora = agora.getHours()
     const minuto = agora.getMinutes()
     const aposInicio = hora >= 4
-    const antesDoFim = hora < 9
+    const antesDoFim = hora < 10
     if (!aposInicio || !antesDoFim) setForaDoPrazo(true)
 
     fetch(`/api/confirmar?matricula=${c.matricula}`)
