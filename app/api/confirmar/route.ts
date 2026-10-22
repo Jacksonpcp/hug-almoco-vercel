@@ -18,7 +18,7 @@ export async function POST(req: NextRequest) {
 
   const hora = agora.getHours()
   const aposInicio = hora >= 4
-  const antesDoFim = hora < 10
+  const antesDoFim = hora < 8
 
   if (!aposInicio || !antesDoFim) {
     return NextResponse.json({ erro: 'Confirmações aceitas somente entre 4h e 9h.' }, { status: 403 })
